@@ -116,17 +116,17 @@ def json_output(req_compound):
         c_smiles_sec = get_depth('Canonical SMILES', computed_sections)
         json_output['Canonical SMILES'] = result_data['Record']['Section'][names_and_id]['Section'][computed_desc]['Section'][c_smiles_sec]['Information'][0]['StringValue']
     else:
-        json_output['Canonical SMILES'] = ''
+        json_output['Canonical SMILES'] = []
     if 'Isomeric SMILES' in r.text:
         i_smiles_sec = get_depth('Isomeric SMILES', computed_sections)
         json_output['Isomeric SMILES'] = result_data['Record']['Section'][names_and_id]['Section'][computed_desc]['Section'][i_smiles_sec]['Information'][0]['StringValue']
     else:
-        json_output['Isomeric SMILES'] = ''
+        json_output['Isomeric SMILES'] = []
     if 'Molecular Formula' in r.text:
         molecular_form = get_depth('Molecular Formula', sections)
         json_output['molecular-formula'] = result_data['Record']['Section'][names_and_id]['Section'][molecular_form]['Information'][0]['StringValue']
     else:
-        json_output['molecular-formula'] = ''
+        json_output['molecular-formula'] = []
     if 'CAS' in r.text:
         cas_sec = get_depth('CAS', id_sections)
         json_output['CAS-NUMBER'] = result_data['Record']['Section'][names_and_id]['Section'][other_id]['Section'][cas_sec]['Information'][0]['StringValue']
@@ -136,12 +136,12 @@ def json_output(req_compound):
         un_sec = get_depth('UN Number', id_sections)
         json_output['un-number'] = result_data['Record']['Section'][names_and_id]['Section'][other_id]['Section'][un_sec]['Information'][0]['StringValue']
     else:
-        json_output['UN Number'] = ''
+        json_output['UN Number'] = []
     if 'MeSH Synonyms' in r.text:
         mesh_sec = get_depth('MeSH Synonyms', syn_sections)
         json_output['MeSH synonyms'] = result_data['Record']['Section'][names_and_id]['Section'][synonyms]['Section'][mesh_sec]['Information'][0]['StringValueList']
     else:
-        json_output['MeSH Synonyms'] = ''
+        json_output['MeSH Synonyms'] = []
 
     sections = result_data['Record']['Section'][chem_phys_props]['Section']
     computed_prop_dep = get_depth('Computed Properties', sections)
@@ -163,30 +163,36 @@ def json_output(req_compound):
         json_output['Hyrogen Bond Acceptor Count'] = result_data['Record']['Section'][chem_phys_props]['Section'][computed_prop_dep]['Section'][hy_bond_a]['Information'][0]['NumValue']
     else:
         json_output['Hydrogen Bond Acceptor Count'] = ''
-    # if 'Rotatable Bond Count' in r.text:
-    #     json_output['Rotatable Bond Count'] = result_data['Record']['Section'][chem_phys_props]['Section'][computed_prop_dep]['Section'][chem_phys_props]['Information'][0]['NumValue']
-    # else:
-    #     json_output['Rotatable Bond Count'] = ''
-    # if 'Exact Mass' in r.text:
-    #     json_output['Exact Mass'] = result_data['Record']['Section'][chem_phys_props]['Section'][computed_prop_dep]['Section'][5]['Information'][0]['NumValue']
-    # else:
-    #     json_output['Exact Mass'] = ''
-    # if 'Heavy Atom Count' in r.text:
-    #     json_output['Heavy Atom Count'] = result_data['Record']['Section'][chem_phys_props]['Section'][computed_prop_dep]['Section'][8]['Information'][0]['NumValue']
-    # else:
-    #     json_output['Heavy Atom Count'] = ''
-    # if 'Formal Charge' in r.text:
-    #     json_output['Formal Charge'] = result_data['Record']['Section'][chem_phys_props]['Section'][computed_prop_dep]['Section'][9]['Information'][0]['NumValue']
-    # else:
-    #     json_output['Formal Charge'] = ''
-    # if 'Complexity' in r.text:
-    #     json_output['Complexity'] = result_data['Record']['Section'][chem_phys_props]['Section'][computed_prop_dep]['Section'][10]['Information'][0]['NumValue']
-    # else:
-    #     json_output['Complexity'] = ''
-    # if 'Covalently-Bonded Unit Count' in r.text:
-    #     json_output['Covalently-Bonded Unit Count'] = result_data['Record']['Section'][chem_phys_props]['Section'][computed_prop_dep]['Section'][16]['Information'][0]['NumValue']
-    # else:
-    #     json_output['Covalently-Bonded Unit Count'] = ''
+    if 'Rotatable Bond Count' in r.text:
+        r_bond_cnt = get_depth('Rotatable Bond Count', comp_prop_sec)
+        json_output['Rotatable Bond Count'] = result_data['Record']['Section'][chem_phys_props]['Section'][computed_prop_dep]['Section'][r_bond_cnt]['Information'][0]['NumValue']
+    else:
+        json_output['Rotatable Bond Count'] = ''
+    if 'Exact Mass' in r.text:
+        e_mass = get_depth('Exact Mass', comp_prop_sec)
+        json_output['Exact Mass'] = result_data['Record']['Section'][chem_phys_props]['Section'][computed_prop_dep]['Section'][e_mass]['Information'][0]['NumValue']
+    else:
+        json_output['Exact Mass'] = ''
+    if 'Heavy Atom Count' in r.text:
+        h_atom_cnt = get_depth('Heavy Atom Count', comp_prop_sec)
+        json_output['Heavy Atom Count'] = result_data['Record']['Section'][chem_phys_props]['Section'][computed_prop_dep]['Section'][h_atom_cnt]['Information'][0]['NumValue']
+    else:
+        json_output['Heavy Atom Count'] = ''
+    if 'Formal Charge' in r.text:
+        f_charge = get_depth('Formal Charge', comp_prop_sec)
+        json_output['Formal Charge'] = result_data['Record']['Section'][chem_phys_props]['Section'][computed_prop_dep]['Section'][f_charge]['Information'][0]['NumValue']
+    else:
+        json_output['Formal Charge'] = ''
+    if 'Complexity' in r.text:
+        complexity = get_depth('Complexity', comp_prop_sec)
+        json_output['Complexity'] = result_data['Record']['Section'][chem_phys_props]['Section'][computed_prop_dep]['Section'][complexity]['Information'][0]['NumValue']
+    else:
+        json_output['Complexity'] = ''
+    if 'Covalently-Bonded Unit Count' in r.text:
+        c_bond_unit = get_depth('Covalently-Bonded Unit Count', comp_prop_sec)
+        json_output['Covalently-Bonded Unit Count'] = result_data['Record']['Section'][chem_phys_props]['Section'][computed_prop_dep]['Section'][c_bond_unit]['Information'][0]['NumValue']
+    else:
+        json_output['Covalently-Bonded Unit Count'] = ''
 
     # print json_output
     # return r.json()
@@ -202,7 +208,7 @@ def get_depth(search_value, x):
         for key, value in section.iteritems():
             if value == search_value:
                 temp = level - 1
-                print search_value, temp
+                # print search_value, temp
                 return temp
 
 def getPubChemID(compound, res_num):
@@ -214,7 +220,7 @@ def getPubChemID(compound, res_num):
     cidnum = []
     for elem in soup(text=re.compile(r'CID:')):
         cidnum.append(elem.parent.next_sibling.string)
-    print res_num
+    # print res_num
     return cidnum[res_num]
 
 # Tabular test
